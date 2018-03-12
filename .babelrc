@@ -3,6 +3,10 @@
     "plugins": [
         "transform-runtime",
         "transform-object-rest-spread",
-        "syntax-dynamic-import"
+        "syntax-dynamic-import",
+        ["import", {
+            "libraryName": "iview",
+            "libraryDirectory": "src/components"
+        }]
     ]
 }

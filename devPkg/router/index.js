@@ -1,3 +1,7 @@
+/*********************************************************************
+ * Created by deming-su on 2017/12/30
+ *********************************************************************/
+
 "use strict";
 
 /* 加载vue路由 */
@@ -5,113 +9,92 @@ import Router from "vue-router";
 
 /* 各个功能模块 --start-- */
 
-/* 首页 */
-const Home = () => import("../components/home/Index.vue");
+/* 登录页面 */
+const Login = () => import("../components/login/Login.vue");
 
-/* 指南 */
-const Guide = () => import("../components/home/Guide.vue");
+/* 售电总览*/
+const Overview = () => import("../components/overview/Index.vue");
 
-/* web组件 */
-const Component = () => import("../components/home/Component.vue");
+/* 市场动态 */
+const MarketDynamics = () => import("../components/overview/MarketDynamics.vue");
 
-/* 更新日志 */
-const Record = () => import("../components/common/update/Record.vue");
+/* 市场动态 */
+const Management = () => import("../components/overview/Management.vue");
 
-/* 安装使用 */
-const Buildin = () => import("../components/common/installInfo/BuildIn.vue");
+/* 市场动态 */
+const DealOverview = () => import("../components/overview/DealOverview.vue");
 
-/* 页面栅格布局 */
-const Layout = () => import("../components/common/layout/Layout.vue");
+/* 客户管理 */
+const Customer = () => import("../components/customer/Index.vue");
 
-/* 颜色值 */
-const Colors = () => import("../components/common/colors/Colors.vue");
+/* 客户管理 */
+const Electricity = () => import("../components/customer/ElectricityCustomer.vue");
 
-/* 按钮组件 */
-const Button = () => import("../components/common/button/Button.vue");
+/* 客户管理 */
+const Potential = () => import("../components/customer/PotentialCustomer.vue");
 
-/* 输入组件 */
-const Input = () => import("../components/common/input/Input.vue");
+/* 客户管理 */
+const Power = () => import("../components/customer/PowerSupplier.vue");
 
-/* 下拉组件 */
-const Selection = () => import("../components/common/selection/Selection.vue");
+/* 客户管理 */
+const Channel = () => import("../components/customer/ChannelDealer.vue");
 
-/* tbas组件 */
-const Tabs = () => import("../components/common/tab/Tabs.vue");
-
-/* 可编辑树组件 */
-const Edittree = () => import("../components/common/edittree/TreeEditTable.vue");
-
-/* 线性进度条组件 */
-const Progress = () => import("../components/common/progress/Progress.vue");
-
-/* 分页组件 */
-const Pagination = () => import("../components/common/pagination/Pagination.vue");
-
-/* 树形组件 */
-const Tree = () => import("../components/common/tree/Tree.vue");
-
-/* 上传组件 */
-const Uploader = () => import("../components/common/uploader/Uploader.vue");
-
-/* 确认对话框组件 */
-const ConfirmDialog = () => import("../components/common/confirmdialog/ConfirmDialog.vue");
-
-/* Tooltip 组件 */
-const Tooltip = () => import("../components/common/tooltip/Tooltip.vue");
-
-/* mobile 组件 */
-const MComponent = () => import("../components/home/MComponent.vue");
-
-/* mobile 下拉组件说明 */
-const MDroplist = () => import("../components/common/mselection/MDroplist.vue");
-
-/* 资源 */
-const Resource = () => import("../components/home/Resource.vue");
 
 /* 各个功能模块 --end-- */
 
-const [WEB_CHILDREN, MOBILE_CHILDREN] = [
+const [OVERVIEW, CUSTOMER] = [
     [
-        { path: "", component: Record },
-        { path: "/record", component: Record },
-        { path: "/buildin", component: Buildin },
-        { path: "/layout", component: Layout },
-        { path: "/colors", component: Colors },
-        { path: "/button", component: Button },
-        { path: "/input", component: Input },
-        { path: "/droplist", component: Selection },
-        { path: "/tabs", component: Tabs },
-        { path: "/treeEditTable", component: Edittree },
-        { path: "/progess", component: Progress },
-        { path: "/pagination", component: Pagination },
-        { path: "/tree", component: Tree },
-        { path: "/uploader", component: Uploader },
-        { path: "/confirmdialog", component: ConfirmDialog },
-        { path: "/tooltip", component: Tooltip }
+        { path: "", component: MarketDynamics },
+        { path: "/marketDynamics", component: MarketDynamics },
+        { path: "/management", component: Management },
+        { path: "/dealAnalysis", component: DealOverview }
     ],
     [
-        { path: "", component: MDroplist },
-        { path: "/mdroplist", component: MDroplist }
+        { path: "", component: Electricity },
+        { path: "/electricity", component: Electricity },
+        { path: "/potential", component: Potential },
+        { path: "/power", component: Power },
+        { path: "/channel", component: Channel }
     ]
 ];
 
 /* 路由配置 */
 const router = new Router({
     routes: [
-        { path: "/", redirect: '/home' },
-        { path: "/home", component: Home },
-        { path: "/guide", component: Guide },
+        { path: "/", redirect: '/login' },
+        { path: "/login", component: Login },
         {
-            path: "/component",
-            component: Component,
-            children: WEB_CHILDREN
+            path: "/overview",
+            component: Overview,
+            children: OVERVIEW,
+            meta: {
+                requestLogin: true
+            }
         },
         {
-            path: "/mcomponent",
-            component: MComponent,
-            children: MOBILE_CHILDREN
-        },
-        { path: "/resource", component: Resource }
+            path: "/customer",
+            component: Customer,
+            children: CUSTOMER
+        }
     ]
 });
-export { router, WEB_CHILDREN, MOBILE_CHILDREN };
+
+/* 路由权限拦截 */
+router.beforeEach((to, from, next) => {
+    if (to.meta.requestLogin) {
+        let loginName = sessionStorage.getItem("userName");
+        if (loginName && loginName === "admin&admin") {
+            next();
+        } else if (to.path === '/login') {
+            next();
+        } else {
+            next({
+                path: "/login"
+            })
+        }
+    } else {
+        next();
+    }
+});
+
+export { router, OVERVIEW };

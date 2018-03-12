@@ -8,7 +8,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: {
-        "all.min": ["./devPkg/main.js"]
+        "all.min": "./devPkg/main.js"
     },
     output: {
         path: path.join(__dirname, './static'),
@@ -42,10 +42,14 @@ module.exports = {
             {
                 test: /\.(png|jpg|gif|ttf|svg|woff|eot)$/,
                 loader: 'url-loader',
-                query: {
+                options: {
                     limit: 3000,
                     name: './images/[name].[ext]?[hash]'
                 }
+            },
+            {
+                test: /iview.src.*?js$/,
+                loader: 'babel-loader'
             }
         ]
     },
@@ -55,6 +59,6 @@ module.exports = {
                 NODE_ENV: JSON.stringify("production")
             }
         }),
-        new ExtractTextPlugin('./style/[name].css')
+        new ExtractTextPlugin('./style/main.css')
     ]
 };

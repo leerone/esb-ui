@@ -1,5 +1,5 @@
 /*********************************************************************
- * Created by deming-su on 2018/1/10
+ * Created by deming-su on 2017/12/30
  *********************************************************************/
 
 module.exports = {
@@ -24,4 +24,4 @@ module.exports = {
         "no-extend-native": "error",
         "dot-notation": "error"
     }
-}
+  }

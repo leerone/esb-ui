@@ -20,7 +20,7 @@ import Router from 'vue-router';
 import store from './vuex';
 
 /* 加载模块路由 */
-import { router } from './router';
+import { router, IVIEW_COMPONENTS } from './router';
 
 /* 向Vue容器注入路由 */
 Vue.use(Router);
@@ -31,10 +31,6 @@ import Index from "./components/Index.vue";
 /* 引入公共方法 */
 import * as tt from './components/common/ToolTip';
 tt.ToolTip();
-
-/* 引入通用组件 */
-import * as LensynUI from './components/templates';
-Vue.use(LensynUI);
 
 /* vue实例化，加载路由、状态管理器、指向模板引擎 */
 new Vue({

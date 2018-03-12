@@ -1,48 +1,47 @@
 /*********************************************************************
- * Created by deming-su on 2017/10/20                                *
+ * Created by deming-su on 2017/12/30
  *********************************************************************/
 
+/* 全局通用方法 */
 export const ToolTip = function () {
-    let startMove = false;
-    let node = null;
-    /* 页面提示信息 */
-    document.addEventListener("mouseover", function (evt) {
-        let txt = evt.target.getAttribute("mouse-hover");
-        if(txt) {
-            startMove = true;
-            /* 如果要展示提示信息框，并且没有初始化信息框，则添加信息框 */
-            if(!node) {
-                /* 创建提示框并获取展示位置 设置提示框样式 */
-                node = document.createElement("div");
-                let top = evt.target.getBoundingClientRect().top;
-                let left = evt.target.getBoundingClientRect().left;
-                let st = "position: fixed;padding: 3px 6px;background-color: #f00;color: #fff; border: solid 1px #dcdcdc; min-width: 160px;" +
-                    "min-height: 30px;border-radius: 4px;box-shadow: 0 0 5px rgba(0, 0, 0, .8);font-size: 14px;z-index: 9999;";
-                /* 根据页面提示框类型展示到不同的位置 */
-                if(txt === "left") {
-                    top = document.body.offsetWidth - left - 3;
-                    st += "top: "+top+"px;right: "+left+"px;";
-                } else if (txt === "right") {
-                    left = left + evt.target.clientWidth + 3;
-                    st += "top: "+top+"px;left: "+left+"px;";
-                } else {
-                    top = top + evt.target.clientHeight + 3;
-                    st += "top: "+top+"px;left: "+left+"px;";
-                }
-                node.setAttribute("style", "position: fixed;top: "+top+"px;left: "+left+"px;" +
-                    "padding: 3px 6px;background-color: #f00;color: #fff; border: solid 1px #dcdcdc; min-width: 160px;max-width: 600px;" +
-                    "min-height: 30px;border-radius: 4px;box-shadow: 0 0 5px rgba(0, 0, 0, .8);font-size: 14px;z-index: 9999;");
-                document.body.appendChild(node);
+    /* rgb转16进制 */
+    window.RGBToHEX = function(val){
+        val = val.toLowerCase().replace(/\s/g, '');
+        /* 测试提交的字符串 */
+        if(/^rgb\([0-9]{1,3},[0-9]{1,3},[0-9]{1,3}\)$/.test(val)) {
+            /* 拆分字符串 */
+            let arr = val.replace(/rgb|\(|\)|\s/g, '').split(",");
+            let str = "#";
+            for(let i = 0;i < arr.length;i ++) {
+                /* 编码数字到16进制 */
+                let hex = Number(arr[i]).toString(16);
+                str += hex.length < 2 ? "0" + hex : hex;
             }
-            /* 添加展示内容 */
-            node.innerHTML = evt.target.innerHTML;
+            val = str;
         }
-    });
-    document.addEventListener("mouseout", function () {
-        if(startMove && node) {
-            /* 如果是处于插件显示状态，关闭提示信息框 */
-            document.body.removeChild(node);
-            node = null;
+        return val;
+    };
+    /* 16进制转rgb */
+    window.HEXToRGB = function(val){
+        /* 检测提交字符串 */
+        if(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(val)) {
+            /* 自动补全3位16进制字符串 */
+            if(val.length === 4) {
+                let str = "#";
+                for(let i = 1;i < 4;i ++) {
+                    let char = val.slice(i, i+1);
+                    str += char.concat(char);
+                }
+                val = str;
+            }
+            let res = [];
+            /* 遍历字符串转为十进制rgb */
+            for(let i = 1;i < 7;i += 2) {
+                /* 两个方法都可以转 */
+                res.push(parseInt(val.slice(i, i+2), 16)); // parseInt('0x'+val.slice(i, i+2));
+            }
+            val = "rgb("+res.join(",")+")";
         }
-    });
+        return val;
+    };
 };

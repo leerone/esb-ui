@@ -1,5 +1,5 @@
 
-# 能信前端Vue组件
+# Vue前端构架-结构目录及使用说明
 
 ## 浏览器兼容说明
 
@@ -19,7 +19,7 @@
 ## 目录结构说明
 
 ```
-├── lensyn-ui/                  （项目名字）
+├── lensyn-asyn/                （项目名字）
 ├    ├── checkDir/              （代码检查结果目录）
 ├    ├── devPkg/                （项目开发目录，存放vue、vuex开发文件的地方）
 ├    ├    ├── components/       （具体的业务模块的目录)
@@ -34,7 +34,7 @@
 ├    ├── mokeData/              （moke数据文件目录）
 ├    ├── static/                （静态资源文件目录）
 ├    ├    ├── images            （所有图片文件）
-├    ├    ├── style             （所有样式文件）
+├    ├    ├── style            （所有样式文件）
 ├    ├    ├── all.min.js        （项目）
 ├    ├── .gitignore             （git提交忽略文件）
 ├    ├── gulpfile.js            （gulp文件）
